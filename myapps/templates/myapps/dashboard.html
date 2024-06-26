@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Count</title>
+    {% csrf_token %}
+</head>
+<body>
+    <div class="card-body">
+        <h5 class="card-title">Total University</h5>
+
+        <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-cart"></i>
+            </div>
+            <div class="ps-3">
+                <h6 id="university-count-placeholder">Loading...</h6>
+                <!-- Optional: Display other statistics or information -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to extract CSRF token from cookies
+            function getCSRFToken() {
+                const csrfToken = document.cookie.match(/csrftoken=([^;]+)/);
+                return csrfToken ? csrfToken[1] : '';
+            }
+
+            // GraphQL query to fetch universities count
+            const query = `
+                query {
+                    universities {
+                        id
+                    }
+                }
+            `;
+
+            // Fetch data using Fetch API with CSRF token
+            fetch('http://localhost:8000/graphql/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()  // Include CSRF token retrieved from cookies
+                },
+                body: JSON.stringify({ query })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const universityCount = data.data.universities.length;
+                document.getElementById('university-count-placeholder').textContent = universityCount;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        });
+    </script>
+</body>
+</html>

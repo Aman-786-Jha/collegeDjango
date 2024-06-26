@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GraphQL Integration</title>
+  {% csrf_token %}
+
+
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    /* Add more styles as needed */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Universities List</h1>
+    <div id="universities-list"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const endpointUrl = 'http://127.0.0.1:8000/graphql/';
+
+  // GraphQL query to fetch universities data
+  const query = `
+    query {
+      universities {
+        id
+        name
+        location
+        establishedYear
+        website
+        contactEmail
+        contactPhone
+        description
+        studentPopulation
+        facultyCount
+        annualBudget
+        accreditation
+      }
+    }
+  `;
+
+  // Fetch CSRF token from cookies or from a form input
+  function getCSRFToken() {
+    const csrfTokenElement = document.querySelector('input[name=csrfmiddlewaretoken]');
+    return csrfTokenElement ? csrfTokenElement.value : null;
+  }
+
+  // Make a POST request to GraphQL endpoint using fetch with CSRF token
+  fetch(endpointUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'X-CSRFToken': getCSRFToken(),  // Include CSRF token
+    },
+    body: JSON.stringify({ query: query }),  // Send the GraphQL query as JSON
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    const universities = data.data.universities;
+    const universitiesListElement = document.getElementById('universities-list');
+
+    universities.forEach(university => {
+      const universityElement = document.createElement('div');
+      universityElement.classList.add('university');
+
+      universityElement.innerHTML = `
+        <h2>${university.name}</h2>
+        <p><strong>Location:</strong> ${university.location}</p>
+        <p><strong>Established Year:</strong> ${university.establishedYear}</p>
+        <p><strong>Website:</strong> ${university.website}</p>
+        <p><strong>Accreditation:</strong> ${university.accreditation}</p>
+        <!-- Display other university details -->
+      `;
+
+      universitiesListElement.appendChild(universityElement);
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+});
+
+
+  </script>
+</body>
+</html>
