@@ -126,7 +126,7 @@ def university_count_view(request):
         csrf_token = get_token(request)
         
         response = requests.post(
-            f"https://{request.get_host()}/graphql/",  # Note the trailing slash
+            f"http://{request.get_host()}/graphql/",  # Note the trailing slash
             json={'query': query},
             headers={'X-CSRFToken': csrf_token}
         )
