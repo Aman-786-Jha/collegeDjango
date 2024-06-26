@@ -153,6 +153,7 @@ def charts(request):
 
 
 
+
 import json
 import redis
 from django.shortcuts import render
