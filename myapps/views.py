@@ -22,6 +22,7 @@ def demo(request):
     return render(request, 'myapps/demo.html')
 
 
+
 # import requests
 
 # def get_universities_count():
