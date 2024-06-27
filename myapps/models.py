@@ -70,7 +70,7 @@ class Course(models.Model):
     syllabus = models.TextField(blank=True, null=True, default='')
     prerequisites = models.TextField(blank=True, null=True, default='')
     professor = models.CharField(max_length=255, blank=True, null=True, default='')
-    course_code = models.CharField(max_length=50, unique=True, editable=False)  # editable=False to prevent direct editing
+    course_code = models.CharField(max_length=50, unique=True, editable=False)  
     max_enrollment = models.PositiveIntegerField(default=0)
     current_enrollment = models.PositiveIntegerField(default=0)
     offered_semester = models.CharField(
