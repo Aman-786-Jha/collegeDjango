@@ -4,8 +4,10 @@ import string
 import random
 from django.db import models
 from django.utils.text import slugify
+import uuid 
 
 class University(models.Model):
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     GRADE_CHOICES = [
         ('A', 'NAAC A'),
         ('B', 'NAAC B'),
@@ -30,6 +32,7 @@ class University(models.Model):
         return self.name
 
 class College(models.Model):
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     university = models.ForeignKey(University, related_name='colleges', on_delete=models.CASCADE)
@@ -48,6 +51,7 @@ class College(models.Model):
 
 
 class Course(models.Model):
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     # Choices for course names
     COURSE_CHOICES = [
         ('B.Tech', 'Bachelor of Technology'),

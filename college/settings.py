@@ -30,7 +30,7 @@ environ.Env.read_env()
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # settings.py
 ALLOWED_HOSTS = ['*']
@@ -40,14 +40,16 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 CUSTOM_APPS = [
-    'myapps'
+    'myapps',
+
     
 ]
 
 THIRD_PARTY_APPS = [
     'graphene_django',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'drf_yasg',
 
 ]
 
@@ -119,6 +121,9 @@ DATABASES = {
     'default': dj_database_url.parse(env('DATABASE_URL')) 
 }
 
+
+
+# local database
 
 
 
@@ -197,19 +202,19 @@ CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 
 
 #redis cachig 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": env('REDIS_URL'),
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env('REDIS_URL'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 
-# REDIS_HOST = env('REDIS_HOST')
-# REDIS_PORT = env('REDIS_PORT')
+REDIS_HOST = env('REDIS_HOST')
+REDIS_PORT = env('REDIS_PORT')
 
 # settings.py
 APPEND_SLASH = True
