@@ -6,12 +6,15 @@ from myapps.schema import schema
 from django.views.decorators.csrf import csrf_exempt
 from . import views 
 urlpatterns = [
-    # ...
+    
+
     path('', views.dashboard, name='dashboard'), 
     path('demo/', views.demo, name='demo'), 
     path('charts/', views.charts, name='charts'), 
     path('university-count/', views.university_count_view, name='university_count'),
     path('user-profile/<int:user_id>/', views.user_profile_view, name='user_profile'),
+
+    #######################################GRAPHQL ################################
     path('graphql/', (GraphQLView.as_view(graphiql=True, schema=schema))), 
 
 
@@ -40,5 +43,5 @@ urlpatterns = [
     path('api/create-university-college-course/', UniversityCollegeCourseCreateView.as_view(), name='create-university-college-course'),
     # path('api/create-university-college-course-multiple/', UniversityCollegeCourseBatchCreateView.as_view(), name='multi-create-university-college-course'),
     
-    
+    path('create-universities/', views.create_universities_view, name='create_universities_view'),
 ]

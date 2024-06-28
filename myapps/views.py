@@ -18,6 +18,8 @@ def dashboard(request):
 
 
 
+
+
 def demo(request):
     return render(request, 'myapps/demo.html')
 
@@ -949,3 +951,45 @@ class UniversityCollegeCourseBatchCreateView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+
+
+
+
+
+
+################################ MULTIPLE UNIVERSITY COLLEGE ASYNS #################################
+
+
+from django.http import JsonResponse
+from django.shortcuts import render
+import asyncio
+import aiohttp
+import json
+
+async def create_data(session, url, data):
+    async with session.post(url, json=data) as response:
+        return await response.json()
+
+async def process_data(base_url, data):
+    url = f'{base_url}/api/create-university-college-course/' 
+    headers = {'Content-Type': 'application/json'}
+    
+    async with aiohttp.ClientSession(headers=headers) as session:
+        tasks = []
+        for item in data:
+            task = create_data(session, url, item)
+            tasks.append(task)
+        responses = await asyncio.gather(*tasks)
+        return responses
+
+def create_universities_view(request):
+    if request.method == 'POST':
+        json_data = request.POST.get('json_data')
+        base_url = f'http://{request.get_host()}'
+        try:
+            data = json.loads(json_data)
+            responses = asyncio.run(process_data(base_url, data))
+            return JsonResponse({'responses': responses})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON provided'}, status=400)
+    return render(request, 'myapps/create_universities.html')
