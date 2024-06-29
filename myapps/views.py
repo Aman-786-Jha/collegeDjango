@@ -95,16 +95,16 @@ def user_profile_view(request, user_id):
         print("University data fetched from database")
         university = get_object_or_404(University, pk=user_id)
         print('university fetched from DB----------->', university)
-        cache.set(cache_key, university, timeout=60 * 15)  # Cache for 15 minutes
+        cache.set(cache_key, university, timeout=60 * 15) 
         print('cache_key-------->', cache_key)
         print('university-------->', university)
 
-    # Convert university object to JSON serializable format (optional, if needed)
+
     university_data = {
         'name': university.name,
         'location': university.location,
         'established_year': university.established_year,
-        # Add more fields as needed
+   
     }
 
     # Return JSON response

@@ -1,2 +1,10 @@
 .env
 __pycache__/
+
+
+# Ignore Docker configuration files
+Dockerfile
+docker-compose.yml
+
+# Ignore SQL backup files
+backup.sql

@@ -115,18 +115,18 @@ WSGI_APPLICATION = 'college.wsgi.application'
 
 
 #render database
-import dj_database_url
+# import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.parse(env('DATABASE_URL')) 
-}
-
-
-
-# local database
+# DATABASES = {
+#     'default': dj_database_url.parse(env('DATABASE_URL')) 
+# }
 
 
+#local database
 
+
+
+#Docker postgres service volume adding docker container
 
 
 
